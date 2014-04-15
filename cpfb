@@ -1,0 +1,59 @@
+# PUT PATH TO BASH 4.2 BINARY HERE
+# Parser
+
+parseConfig() {
+	echo "--Parsing file..."
+	local keyValueSeen=0
+	local keyValueTitle=
+	local arraySeen=0
+	local arrayTitle=
+	local arrayIndex=0
+	local aarraySeen=0
+	local aarrayTitle=
+	while read line; do
+		if [[ "$line" =~ ^[^#] ]]; then
+			if [[ "$line" =~ ^::([a-zA-Z0-9].*) ]]; then
+				keyValueSeen=1
+				keyValueTitle="${BASH_REMATCH[1]}"
+				arraySeen=0
+        		arrayTitle=
+				arrayIndex=0
+        		aarraySeen=0
+        		aarrayTitle=
+			elif [[ "$line" =~ ^\-\-([a-zA-Z0-9].*) ]]; then
+				keyValueSeen=0
+                keyValueTitle=
+                arraySeen=1
+                arrayTitle="${BASH_REMATCH[1]}"
+				declare -ag "$arrayTitle"
+                aarraySeen=0
+                aarrayTitle=
+			elif [[ "$line" =~ ^==([a-zA-Z0-9].*) ]]; then
+				keyValueSeen=0
+                keyValueTitle=
+                arraySeen=0
+                arrayTitle=
+				arrayIndex=0
+                aarraySeen=1
+                aarrayTitle="${BASH_REMATCH[1]}"
+				declare -Ag "$aarrayTitle"
+			else
+				if [[ "$line" =~ ([a-zA-Z0-9].*)=(.*) ]]; then
+					local key="$(echo ${BASH_REMATCH[1]}|tr -d ' ')"
+					local value="$(echo ${BASH_REMATCH[2]}|tr -d ' ')"
+					if [[ $keyValueSeen -eq 1 ]]; then
+						declare -ga "${keyValueTitle}${key}=$value"
+					elif [[ $aarraySeen -eq 1 ]]; then
+						eval "$aarrayTitle[$key]=$value"
+					fi
+				elif [[ $arraySeen -eq 1 && "$line" =~ ^[^\-\-] && "$line" =~ ^[^::] ]]; then
+					local value="$(echo $line|sed -e 's/ *$//')"
+					value="$(echo $value|sed -e 's/^ *//')"
+					eval "$arrayTitle[$arrayIndex]=\"$value\""
+					let arrayIndex+=1
+				fi
+			fi
+		fi
+	done < "$1"
+	echo "--Parsed"
+}
