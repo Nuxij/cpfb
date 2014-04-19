@@ -25,7 +25,7 @@ Key/value pair blocks are defined with the '::' string. They combine the block k
 ::Name
     Item = Value
 ```
-=> NameItem=Value
+=> ```NameItem=Value```
 
 Array blocks are defined with the '--' string. They use the block key, assigning values for each following line item, as so:
 ```
@@ -33,7 +33,7 @@ Array blocks are defined with the '--' string. They use the block key, assigning
     FirstItem
     SecondItem
 ```
-=> MyArray=( "FirstItem" "SecondItem" )
+=> ```MyArray=( "FirstItem" "SecondItem" )```
 
 Associatove array blocks are defined (similarly to standard arrays) with the '==' string. They use the block key, assigning key/value pairs for each item split by an = sign, as so:
 ```
@@ -41,4 +41,11 @@ Associatove array blocks are defined (similarly to standard arrays) with the '==
     first = Thing
     second = More?
 ```
-=> declare -A AnotherArray=( [first]=Thing [second]="More?" )
+=> ```declare -A AnotherArray=( [first]=Thing [second]="More?" )```
+
+=== Usage
+The tests script should show you all you need to know, but here it is anyways. You have to source cpfb in to your bash script and then call the parseConfig function, passing it the config file to parse.
+```bash
+. cpfb
+parseConfig example.conf
+```
