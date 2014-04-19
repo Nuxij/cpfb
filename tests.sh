@@ -1,11 +1,10 @@
 # PUT PATH TO BASH 4.2 BINARY HERE
 # Test pforb
-. "./cpfb"
+. ./cpfb
 
 testKeyValues() {
 	local tot=0
-	parseConfig "$1" || let tot+=1
-	[[ "$Main_Name" ]] || let tot+=1
+	[[ "$Name" ]] || let tot+=1
 	[[ "$Main_Use" ]] || let tot+=1
 	if [[ $tot -eq 0 ]]; then
 		passed "Key = Values"
@@ -16,8 +15,7 @@ testKeyValues() {
 
 testIndexedArrays() {
 	local tot=0
-	parseConfig "$1" || let tot+=1
-	[[ "${MyArray[0]}" ]] || let tot+=1
+	[[ "${MyArray[1]}" =~ ^Some\_otherThing:$ ]] || let tot+=1
 	[[ "${#MyArray[@]}" -eq 2 ]] || let tot+=1
 	if [[ $tot -eq 0 ]]; then
                 passed "Indexed arrays"
@@ -28,8 +26,7 @@ testIndexedArrays() {
 
 testAssociativeArrays() {
 	local tot=0
-	parseConfig "$1" || let tot+=1
-	[[ "${OtherArray[index]}" ]] || let tot+=1
+	[[ "${OtherArray[gitgit]}" =~ ^bestThing\;maybe$ ]] || let tot+=1
 	[[ "${#OtherArray[@]}" -eq 2 ]] || let tot+=1
 	if [[ $tot -eq 0 ]]; then
 		passed "Associative arrays"
@@ -39,6 +36,7 @@ testAssociativeArrays() {
 }
 
 runTests() {
+	parseConfig "$1" || exit 1
 	echo "Running KeyValues..."
 	testKeyValues "$1"
 	echo "Running Arrays..."
@@ -48,11 +46,11 @@ runTests() {
 }
 
 failed() {
-	echo "Failed $1"
+	echo "--Failed $1"
 }
 
 passed() {
-	echo "Passed $1"
+	echo "--Passed $1"
 }
 
 runTests "$1"
