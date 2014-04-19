@@ -15,7 +15,7 @@ testKeyValues() {
 
 testIndexedArrays() {
 	local tot=0
-	[[ "${MyArray[1]}" =~ ^Some\_otherThing:$ ]] || let tot+=1
+	[[ "${MyArray[1]}" =~ ^Some\ otherThing:$ ]] || let tot+=1
 	[[ "${#MyArray[@]}" -eq 2 ]] || let tot+=1
 	if [[ $tot -eq 0 ]]; then
                 passed "Indexed arrays"
@@ -53,4 +53,4 @@ passed() {
 	echo "--Passed $1"
 }
 
-runTests "$1"
+runTests "./example.conf"
