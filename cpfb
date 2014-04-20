@@ -13,7 +13,7 @@ parseConfig() {
 	local aarrayTitle=
 	while read line; do
 		if [[ "$line" =~ ^[^#] ]]; then
-			if [[ "$line" =~ ^::([a-zA-Z0-9\_]*) ]]; then
+			if [[ "$line" =~ ^::([a-zA-Z0-9\_]*)$ ]]; then
 				skipLine="False"
 				title="${BASH_REMATCH[1]}"
 				if [[ "$(onlyValidCharacters $title)" -eq 0 ]]; then
@@ -28,7 +28,7 @@ parseConfig() {
 				arrayIndex=0
 				aarraySeen=0
 				aarrayTitle=
-			elif [[ "$line" =~ ^\-\-([a-zA-Z0-9]+) ]]; then
+			elif [[ "$line" =~ ^\-\-([a-zA-Z0-9\_]+)$ ]]; then
 				skipLine="False"
 				keyValueSeen=0
 				keyValueTitle=
@@ -43,7 +43,7 @@ parseConfig() {
 				fi
 				aarraySeen=0
 				aarrayTitle=
-			elif [[ "$line" =~ ^==([a-zA-Z0-9].*) ]]; then
+			elif [[ "$line" =~ ^==([a-zA-Z0-9\_]+)$ ]]; then
 				skipLine="False"
 				keyValueSeen=0
 				keyValueTitle=
