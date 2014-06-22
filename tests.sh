@@ -6,6 +6,7 @@ testKeyValues() {
 	local tot=0
 	[[ "$Name" ]] || let tot+=1
 	[[ "$Main_Use" ]] || let tot+=1
+	[[ "$Main_CutSpaces" =~ ^A\ string\ with\ spaces$ ]] || let tot+=1
 	if [[ $tot -eq 0 ]]; then
 		passed "Key = Values"
 	else
