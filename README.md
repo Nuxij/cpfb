@@ -41,7 +41,7 @@ Associatove array blocks are defined (similarly to standard arrays) with the '==
     first = Thing
     second = More?
 ```
-=> ```declare -A AnotherArray=( [first]=Thing [second]="More?" )```
+=> ```declare -A AnotherArray=( [first]="Thing" [second]="More?" )```
 
 ### Usage
 The tests script should show you all you need to know, but here it is anyways. You have to source cpfb in to your bash script, so keep it somewhere in your path. Then call the 'parseConfig' function, passing it the config file to parse.
