@@ -64,7 +64,7 @@ parseConfig() {
 					if [[ "$line" =~ (.*)=(.*) ]]; then
 						local key="$(echo ${BASH_REMATCH[1]}|sed 's/[ ]//g')"
 						if [[ "$(onlyValidCharacters $key)" -eq 1 ]]; then
-							echo "Could not set $key: Invalid character"
+							echo "Could not set '$key': Invalid character"
 						else
 							local value="$(echo ${BASH_REMATCH[2]}|sed 's/^[ ]*//'|sed 's/[ ]*$//')"
 							if [[ $keyValueSeen -eq 1 ]]; then
