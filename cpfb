@@ -2,7 +2,10 @@
 # Parser
 
 parseConfig() {
-	echo "--Parsing file..."
+	local verbose="$2"
+	if [[ "$verbose" == 'true' ]]; then
+		echo "--Parsing file..."
+	fi
 	skipLine="False"
 	local keyValueSeen=0
 	local keyValueTitle=
@@ -63,7 +66,7 @@ parseConfig() {
 				if [[ "$skipLine" == "False" ]]; then
 					if [[ "$line" =~ (.*)=(.*) ]]; then
 						local key="$(echo ${BASH_REMATCH[1]}|sed 's/[ ]//g')"
-						if [[ "$(onlyValidCharacters $key)" -eq 1 ]]; then
+						if [[ "$(onlyValidCharacters $key)" -eq 1 && "$verbose" == 'true' ]]; then
 							echo "Could not set '$key': Invalid character"
 						else
 							local value="$(echo ${BASH_REMATCH[2]}|sed 's/^[ ]*//'|sed 's/[ ]*$//')"
@@ -83,7 +86,9 @@ parseConfig() {
 			fi
 		fi
 	done < "$1"
-	echo "--Parsed"
+	if [[ "$verbose" == 'true' ]]; then
+		echo "--Parsed"
+	fi
 }
 
 onlyValidCharacters() {
